@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "fundfacts": {
+      "type": "http",
+      "url": "https://fundfactsapi.com/api/mcp"
+    }
+  }
+}

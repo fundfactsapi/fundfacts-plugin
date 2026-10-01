@@ -1,0 +1,14 @@
+{
+  "name": "fundfacts",
+  "description": "The FundFacts plugin for Claude Code: fund, ETF and SCPI data by ISIN through the FundFacts MCP server.",
+  "owner": { "name": "FundFacts API", "url": "https://fundfactsapi.com", "email": "hello@fundfactsapi.com" },
+  "plugins": [
+    {
+      "name": "fundfacts",
+      "source": "./",
+      "description": "Fund, ETF and SCPI data by ISIN: fees, risk indicator, holdings, exposure, returns, portfolio look-through and overlap.",
+      "category": "finance",
+      "tags": ["funds", "etf", "isin", "scpi", "mcp"]
+    }
+  ]
+}
