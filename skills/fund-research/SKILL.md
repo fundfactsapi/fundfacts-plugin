@@ -4,7 +4,7 @@ description: Looks up and explains factual data on UCITS funds, ETFs and money-m
 license: MIT
 metadata:
   author: FundFacts API
-  version: "1.0.0"
+  version: "1.0.3"
 ---
 
 # Fund research with FundFacts
@@ -13,13 +13,13 @@ The FundFacts MCP server reads the documents each fund house publishes (KID, fac
 
 ## Tools
 
-| Tool | Use it for | Cost to the user's account |
+| Tool | Use it for | Requests counted on the user's account |
 |---|---|---|
-| `search_funds` | Turn a name, issuer or ISIN prefix into ISINs | Free |
+| `search_funds` | Turn a name, issuer or ISIN prefix into ISINs | None |
 | `get_fund` | One fund's full factsheet | One request |
 | `compare_funds` | Two or more ISINs side by side (a compact row per fund) | One request per ISIN |
 
-Requests count toward the monthly allowance of the user's FundFacts plan. Do not call a paid tool speculatively or twice for the same ISIN in a conversation: reuse the result you already have.
+Do not call `get_fund` or `compare_funds` speculatively or twice for the same ISIN in a conversation: each call counts on the user's account, so reuse the result you already have.
 
 ## Workflow
 
@@ -39,7 +39,7 @@ Requests count toward the monthly allowance of the user's FundFacts plan. Do not
 - **No published fund documents found** (`not_found`): the ISIN is not a fund FundFacts covers (a share, a bond, a structured product, a closed fund, or an issuer not covered yet). It counts as a request. Say so plainly; do not guess figures, do not present data from another source as FundFacts data, and do not retry.
 - **Not a valid ISIN**: a typo or a wrong check digit. Not charged. Ask the user to check it.
 - **Documents could not be read right now** (`error`): a temporary failure. Retry at most once, later.
-- **Plan or allowance messages** ("allows 1 ISIN per call", "monthly requests used up", "part of the Pro, Scale and Enterprise plans"): relay them in one neutral sentence with the link the message gives. Do not push the user to upgrade. When the plan allows one ISIN per call, `compare_funds` with several ISINs is refused: call `get_fund` for each fund instead (same cost, one request each) and build the comparison yourself.
+- **Account limit messages** (the account allows one ISIN per call, its monthly requests are used up, or a tool is not included in its plan): relay them in one neutral, informational sentence with the link the message gives (https://fundfactsapi.com/docs/requests). Do not quote prices, suggest changing plan, or point to billing or checkout pages. When the account allows one ISIN per call, `compare_funds` with several ISINs is refused: call `get_fund` for each fund instead (one request each, as with `compare_funds`) and build the comparison yourself.
 - **Sign-in or authorization errors**: the user must connect (or reconnect) their FundFacts account in the assistant's connector or plugin settings. Never ask the user to paste an API key or password into the chat.
 
 ## Reading the payload

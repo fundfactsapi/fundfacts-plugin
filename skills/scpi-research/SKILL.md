@@ -4,16 +4,16 @@ description: Looks up French SCPIs (sociétés civiles de placement immobilier, 
 license: MIT
 metadata:
   author: FundFacts API
-  version: "1.0.0"
+  version: "1.0.3"
 ---
 
 # SCPI research with FundFacts
 
 An SCPI is an unlisted French real-estate company whose shares (parts) are bought from and sold back through its management company (société de gestion). FundFacts reads the management company's own documents (the SCPI's page, the bulletin trimestriel, the DIC, the annual report) and returns one structured record. Explicit instructions from the user take precedence over this skill.
 
-| Tool | Use it for | Cost |
+| Tool | Use it for | Requests counted |
 |---|---|---|
-| `search_scpi` | Find an SCPI by name, former name, management company or ISIN prefix; returns its `slug` | Free |
+| `search_scpi` | Find an SCPI by name, former name, management company or ISIN prefix; returns its `slug` | None |
 | `get_scpi` | The full record for one SCPI, by slug (preferred), ISIN or exact name | One request |
 
 ## Workflow
@@ -22,7 +22,7 @@ An SCPI is an unlisted French real-estate company whose shares (parts) are bough
 2. **Fetch** with `get_scpi` and the `slug` from the search result. Do not show the search result's `url` to the user: it is an API address that needs a key.
 3. **Answer** the question from `data`, then the source line: "Source: FundFacts, from {manager}'s documents, bulletin {data.bulletinPeriod}, data as of {data.dataAsOf}."
 
-Errors: "not a known SCPI" → search again with other words; "no published documents could be read" → the management company's site did not yield documents this time, say so; "could not be retrieved right now" → retry once later. Plan or allowance messages: relay neutrally with their link, without pressing for an upgrade. Sign-in errors: the user reconnects FundFacts in the assistant's settings; never ask for keys or passwords in the chat.
+Errors: "not a known SCPI" → search again with other words; "no published documents could be read" → the management company's site did not yield documents this time, say so; "could not be retrieved right now" → retry once later. Account limit messages (monthly requests used up): relay them in one neutral sentence with their informational link; do not quote prices, suggest changing plan, or point to billing or checkout pages. Sign-in errors: the user reconnects FundFacts in the assistant's settings; never ask for keys or passwords in the chat.
 
 ## Reading the record
 

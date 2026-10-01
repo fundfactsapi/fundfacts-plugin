@@ -13,7 +13,7 @@ Every error is `{ "error": { "code": string, "message": string, ...details } }`.
 | 400 | `batch_too_large` | More ISINs than the plan's batch size; includes `batchMax` | Chunk by `batchMax` |
 | 401 | `missing_api_key`, `invalid_api_key` | No key, or an unknown one (also: an OAuth `ffo_` token sent to the REST API) | Check `FUNDFACTS_API_KEY`; ask the user for a valid key |
 | 401 | `revoked_api_key` | The key was revoked in the dashboard | Ask the user for a new key |
-| 403 | `plan_required` | The endpoint needs a higher plan (portfolio, overlap, extract: Pro; changes, webhooks, export: Scale); includes `required` | Tell the user which plan the feature needs; do not retry |
+| 403 | `plan_required` | The endpoint is not included in the account's plan; includes `required` | Tell the user, neutrally, that the feature is not included in the account's plan, with the link https://fundfactsapi.com/docs/requests; do not retry |
 | 404 | `fund_not_found` | No public data for this ISIN (not a fund, delisted, or not covered yet) | Surface it; do not retry or look elsewhere |
 | 404 | `scpi_not_found` | `/scpi/{id}`: the slug, ISIN or name matches no known SCPI | Look the name up with `GET /scpi?q=` first |
 | 429 | `rate_limited` | `reason`: `burst` (per-minute limit), `quota_exhausted` (monthly allowance), `overage_cap`; includes `retryAfter`, `resetAt` | Wait `Retry-After` seconds; reduce parallelism |
@@ -23,8 +23,8 @@ Every error is `{ "error": { "code": string, "message": string, ...details } }`.
 
 - One request per ISIN answered (found or not found) on `/funds/{isin}`, `POST /funds`, `/portfolio` and `/overlap`, whether the payload came from the 24-hour store or was loaded fresh.
 - One per call on `/scpi/{id}`; one (HTML) or two (PDF) per `POST /factsheets`; five per `/extract` document.
-- Free: `/search`, `/scpi?q=`, `/me`, listing and re-reading saved factsheets, share links.
-- Not counted: invalid ISINs inside `POST /funds`, `/portfolio` and `/overlap` (they are listed under `invalid`), `pending` entries, batch entries that failed to load, rejected calls (401, 429).
+- Not counted: `/search`, `/scpi?q=`, `/me`, listing and re-reading saved factsheets, share links.
+- Not counted either: invalid ISINs inside `POST /funds`, `/portfolio` and `/overlap` (they are listed under `invalid`), `pending` entries, batch entries that failed to load, rejected calls (401, 429).
 - Counted: a malformed ISIN on `GET /funds/{isin}` (400 `invalid_isin`), a malformed id or an unknown SCPI on `GET /scpi/{id}` (400 `invalid_id`, 404 `scpi_not_found`). Validate ISINs (format and check digit) and resolve SCPI names with `GET /scpi?q=` before calling.
 - MCP tool calls count against the same account's quota: one request per fund answered and per SCPI found. Over MCP an invalid ISIN and an unknown SCPI are not counted, unlike the REST calls above.
 
@@ -40,17 +40,9 @@ Every error is `{ "error": { "code": string, "message": string, ...details } }`.
 
 The same numbers are in the `quota` object of each response. Stop before `remaining` reaches 0 in batch jobs.
 
-## Plans (limits only)
+## Plan limits
 
-| Plan | Requests per month | Burst per minute | ISINs per batch call | Portfolio / overlap | API keys |
-|---|---|---|---|---|---|
-| Free | 15 | 10 | 1 | no | 1 |
-| Starter | 500 | 30 | 10 | no | 2 |
-| Pro | 9,000 | 120 | 50 | yes | 10 |
-| Scale | 60,000 | 600 | 200 | yes | 10 |
-| Enterprise | metered | 1,200 | 1,000 | yes | 50 |
-
-Plan changes happen in the dashboard (`https://fundfactsapi.com/dashboard`), never from code. The current plan's figures are in `GET /me`; prefer them over this table in code.
+Requests per month, burst per minute, ISINs per batch call and the endpoints available depend on the account's plan. Read the current figures from `GET /me` (`plan`, `quota`) and the headers above instead of hard-coding them; the reference is https://fundfactsapi.com/docs/requests. Code never changes the plan.
 
 ## Timing
 

@@ -14,7 +14,7 @@ The data is informational. Claude describes and compares funds; it does not tell
 
 ## Install
 
-You need a FundFacts account (the Free plan works, no card): https://fundfactsapi.com/signup. Tool calls count toward your plan's monthly requests like API calls; searches are free.
+You need a FundFacts account: https://fundfactsapi.com/signup. Tool calls count toward the account's monthly requests like API calls (https://fundfactsapi.com/docs/requests); searches are not counted.
 
 **Claude Code**
 

@@ -4,7 +4,7 @@ description: Guides writing code against the FundFacts REST API (https://fundfac
 license: MIT
 metadata:
   author: FundFacts API
-  version: "1.0.0"
+  version: "1.0.3"
 ---
 
 # Building on the FundFacts API
@@ -43,21 +43,21 @@ fund = ff.get_fund("IE00B4L5Y983")
 |---|---|---|
 | `GET /funds/{isin}` | One factsheet | 1 request |
 | `POST /funds` `{ isins, wait }` | Batch; per-item `status` | 1 per ISIN answered |
-| `GET /search?q=&limit=` | Names → ISINs, over funds already loaded | free |
-| `POST /portfolio` `{ positions: [{ isin, weight }] }` | Look-through (Pro and up) | 1 per position |
-| `GET /overlap?isins=A,B` | Pairwise overlap (Pro and up) | 1 per ISIN |
-| `GET /scpi/{slugOrIsin}`, `GET /scpi?q=` | French SCPIs | 1 / free |
+| `GET /search?q=&limit=` | Names → ISINs, over funds already loaded | not counted |
+| `POST /portfolio` `{ positions: [{ isin, weight }] }` | Look-through (not in every plan) | 1 per position |
+| `GET /overlap?isins=A,B` | Pairwise overlap (not in every plan) | 1 per ISIN |
+| `GET /scpi/{slugOrIsin}`, `GET /scpi?q=` | French SCPIs | 1 / not counted |
 | `POST /factsheets` | HTML or PDF one-pager, or keyless share links | 1 (HTML) / 2 (PDF) |
-| `GET /me` | Plan and quota | free |
+| `GET /me` | Plan and quota | not counted |
 
-Request and response shapes, and the Scale-plan endpoints (`/changes`, `/webhooks`, `/export`) and `/extract`: [references/endpoints.md](references/endpoints.md).
+Request and response shapes, and the `/changes`, `/webhooks`, `/export` and `/extract` endpoints: [references/endpoints.md](references/endpoints.md). Look-through, overlap and those four endpoints are not included in every plan (https://fundfactsapi.com/docs/requests); an account without them gets 403 `plan_required`.
 
 ## Rules the code must follow
 
 1. **Slow first loads.** A fund nobody loaded in the last 24 hours is read from its documents on demand: 15 seconds to 3 minutes. Use a 300-second timeout on `/funds/{isin}` (the SDKs default to it), show a loading state in UIs, and never fire the same ISIN twice at once.
 2. **Batches and `pending`.** `POST /funds` answers HTTP 200 with a per-item `status`: `ok`, `not_found`, `pending`, `invalid` or `error`, and a top-level `pending` list. `pending` ISINs are still loading in the background (not charged): re-send just those later, once, after a minute or more. With `wait: false` every cold ISIN comes back `pending` at once, which suits background warm-up jobs.
 3. **Cache by ISIN until `expiresAt`.** Payloads refresh at most once per 24 hours; re-fetching earlier costs a request for the same data.
-4. **Quota.** One request per ISIN answered (found or not found). Read `X-RateLimit-Remaining` and `X-Burst-Remaining`; on 429 wait `Retry-After` seconds (`reason`: `burst`, `quota_exhausted`, `overage_cap`). Batch size per call depends on the plan (Free 1, Starter 10, Pro 50, Scale 200, Enterprise 1,000); chunk larger lists.
+4. **Quota.** One request per ISIN answered (found or not found). Read `X-RateLimit-Remaining` and `X-Burst-Remaining`; on 429 wait `Retry-After` seconds (`reason`: `burst`, `quota_exhausted`, `overage_cap`). Batch size per call depends on the account's plan: read it from `GET /me` or from `batchMax` in a 400 `batch_too_large`, and chunk larger lists.
 5. **Errors** are `{ "error": { "code", "message", ... } }`. Retry only 502 `upstream_error`, at most twice, 60 s apart. `404 fund_not_found` means "not a covered fund": surface it, do not retry. Full table: [references/errors-and-limits.md](references/errors-and-limits.md).
 6. **Data shape.** Fields that do not apply are `""`, `null` or `[]` (not disclosed, never zero). Fee, size and statistic fields are formatted strings (`"0.20%"`, `"USD 151.7bn"`); parse them only when the user needs numbers. Breakdown weights and returns are numbers in percent. Show `data.dataAsOf` next to figures. Use `data.profile` to classify and filter.
 7. **Holdings pitfalls.** `topHoldings[].weight` is `null` for every row when the fund house publishes names only: never estimate. When `data.holdingsBasis` is `"substituteBasket"` (a synthetic ETF, `data.replication: "synthetic"`), the holdings are the swap's collateral, not the exposure: use `sector` / `geography` / `region`, and keep such holdings out of look-through or overlap code (the `/portfolio` and `/overlap` endpoints already do).

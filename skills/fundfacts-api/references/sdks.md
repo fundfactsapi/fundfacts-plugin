@@ -17,14 +17,14 @@ const ff = new FundFacts(); // or new FundFacts({ apiKey, baseUrl, timeoutMs, fe
 
 const fund = await ff.getFund("IE00B4L5Y983");                  // 1 request; cached in memory until expiresAt
 const batch = await ff.getFunds(["IE00B4L5Y983", "IE00BK5BQT80"]); // POST /funds; batch.pending lists ISINs still loading
-const hits = await ff.search("msci world");                       // free
+const hits = await ff.search("msci world");                       // not counted
 const look = await ff.portfolio([{ isin: "IE00B4L5Y983", weight: 60 }, { isin: "IE00BK5BQT80", weight: 40 }]);
 const ov = await ff.overlap(["IE00B4L5Y983", "IE00BK5BQT80"]);
 const me = await ff.me();                                        // plan and quota
 const html = await ff.factsheet("IE00B4L5Y983", { format: "html" }); // string
 const pdf = await ff.factsheet("IE00B4L5Y983", { format: "pdf" }); // ArrayBuffer
 const link = await ff.factsheet("IE00B4L5Y983", { deliver: "link" }); // { urls: { html, pdf, embed } }
-// Scale and up: ff.changes({ since }), for await (const f of ff.export({ issuer: "iShares" })) { ... }
+// Not included in every plan: ff.changes({ since }), for await (const f of ff.export({ issuer: "iShares" })) { ... }
 
 try {
   await ff.getFund(isin);
@@ -61,7 +61,7 @@ pdf = ff.factsheet("IE00B4L5Y983", format="pdf")  # bytes
 
 - Raises `FundFactsError` (`status`, `code`, `message`, `retry_after`); a burst 429 is retried once automatically.
 - For analysis: `pandas.json_normalize(fund["data"]["topHoldings"])`; a holding's `weight` is `None` when the fund house publishes names only.
-- Also: `changes(...)`, `export(...)` (iterator, Scale and up), `factsheets(...)`.
+- Also: `changes(...)`, `export(...)` (iterator; `changes` and `export` are not included in every plan (https://fundfactsapi.com/docs/requests)), `factsheets(...)`.
 
 ## React: `@fundfactsapi/widgets`
 

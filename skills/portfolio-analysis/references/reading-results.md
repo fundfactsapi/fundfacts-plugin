@@ -52,7 +52,7 @@ Coverage 80 with one fund in `pending`:
 
 ## Large portfolios
 
-The plan caps positions per call (Pro 50, Scale 200, Enterprise 1,000). Above the cap, with the user's agreement:
+The account's plan caps positions per call; the tool says so when a list is too long. Above the cap, with the user's agreement:
 
 1. Split the positions into groups under the cap and note each group's share of the total (sum of its weights over the grand total).
 2. Call `analyze_portfolio` per group.

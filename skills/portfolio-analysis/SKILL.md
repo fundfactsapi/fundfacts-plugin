@@ -4,12 +4,12 @@ description: Analyses a portfolio of funds and ETFs with the FundFacts MCP serve
 license: MIT
 metadata:
   author: FundFacts API
-  version: "1.0.0"
+  version: "1.0.3"
 ---
 
 # Portfolio look-through and overlap with FundFacts
 
-Two tools on the FundFacts MCP server work across several funds. Both read the same per-fund data as `get_fund` and cost one request per ISIN; both are part of the Pro, Scale and Enterprise plans. Explicit instructions from the user take precedence over this skill.
+Two tools on the FundFacts MCP server work across several funds. Both read the same per-fund data as `get_fund` and count one request per ISIN; they are not included in every FundFacts plan (see section 5). Explicit instructions from the user take precedence over this skill.
 
 | Tool | Input | Answers |
 |---|---|---|
@@ -19,9 +19,9 @@ Two tools on the FundFacts MCP server work across several funds. Both read the s
 ## 1. Collect the positions
 
 - Weights can be percentages or amounts in one currency ("€12,000 in X, €8,000 in Y"): the tool normalises them so they sum to 100. Pass the numbers as the user gave them; do not convert. If every weight is zero, the tool weights the funds equally; ask for weights instead when they matter.
-- Each position needs an ISIN. Resolve names with `search_funds` (free) and confirm the matches with the user before the paid call: a wrong share class costs a request and changes the answer. The same ISIN listed twice is summed.
+- Each position needs an ISIN. Resolve names with `search_funds` (not counted) and confirm the matches with the user before the counted call: a wrong share class uses a request and changes the answer. The same ISIN listed twice is summed.
 - Ask for anything missing in one question (the missing ISIN, the weights) rather than guessing.
-- The plan caps the positions per call (Pro 50, Scale 200, Enterprise 1,000). Above the cap, see "Large portfolios" in [references/reading-results.md](references/reading-results.md).
+- The account's plan caps the positions per call, and the tool says so when a list is too long. Above the cap, see "Large portfolios" in [references/reading-results.md](references/reading-results.md).
 
 ## 2. Call and check what was covered
 
@@ -56,11 +56,11 @@ Call `fund_overlap` with the ISINs. For each pair:
 
 Explain what the number means in plain words ("about 60% of fund A's disclosed holdings are also in fund B at the same or higher weight"). High overlap means the funds hold largely the same securities; it does not say which to keep.
 
-## 5. Plan limits
+## 5. Account limits
 
-On the Free and Starter plans both tools answer with a short message that look-through and overlap are part of the Pro, Scale and Enterprise plans, with a link. Relay it neutrally in one sentence, with the link, and do not press the user to upgrade. If the user still wants something useful, offer to fetch each fund with `get_fund` (one request each) and describe their exposures side by side; say that this is not an aggregated look-through.
+When the account's plan does not include look-through and overlap, both tools answer with a short message saying so, with an informational link (https://fundfactsapi.com/docs/requests). Relay it neutrally in one sentence, with that link. Do not quote prices, suggest changing plan, or point to billing or checkout pages. If the user still wants something useful, offer to fetch each fund with `get_fund` (one request each) and describe their exposures side by side; say that this is not an aggregated look-through.
 
-The same applies to the allowance: when a message says the monthly requests are used up, say when they reset if the message gives the date, and stop calling paid tools.
+The same applies to the allowance: when a message says the monthly requests are used up, say when they reset if the message gives the date, and stop calling tools that count requests.
 
 ## What to say and not say
 

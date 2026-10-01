@@ -1,5 +1,5 @@
 ---
-description: Look-through on a plan without it; the limit is relayed neutrally, with no upgrade pitch, and an alternative is offered.
+description: Look-through on a plan without it; the limit is relayed neutrally, with no plan pitch, and an alternative is offered.
 tags: [portfolio-analysis, plans]
 max_turns: 8
 allowed_tools: [Skill]
