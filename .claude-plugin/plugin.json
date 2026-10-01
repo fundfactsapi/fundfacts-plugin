@@ -1,7 +1,7 @@
 {
   "name": "fundfacts",
   "displayName": "FundFacts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Fund, ETF and SCPI data by ISIN from the FundFacts MCP server: fees (TER, KID costs), SRRI risk indicator, SFDR article, replication, holdings, sector and country exposure, returns, volatility, portfolio look-through and holdings overlap, read from the documents each fund house publishes. Sign in with your FundFacts account (OAuth).",
   "author": { "name": "FundFacts API", "url": "https://fundfactsapi.com", "email": "hello@fundfactsapi.com" },
   "homepage": "https://fundfactsapi.com/docs/ai-agents",

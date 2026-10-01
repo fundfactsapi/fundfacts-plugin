@@ -4,7 +4,7 @@ description: Analyses a portfolio of funds and ETFs with the FundFacts MCP serve
 license: MIT
 metadata:
   author: FundFacts API
-  version: "1.0.3"
+  version: "1.0.4"
 ---
 
 # Portfolio look-through and overlap with FundFacts

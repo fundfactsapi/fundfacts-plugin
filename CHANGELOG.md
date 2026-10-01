@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.4 (2026-10-01)
+
+- Onboarding: when the user is new or asks what FundFacts does, the `fund-research` skill and the server's instructions explain it in a few plain bullets, show the example fund IE00B4L5Y983 (iShares Core MSCI World UCITS ETF, preloaded and not counted as a request), walk through what it shows and suggest next questions.
+- Server: a `tour` prompt ("Tour of FundFacts") does the same, on the example fund or on an ISIN the user gives; `get_fund` on the example fund is not counted as a request. Tools are unchanged.
+- README: ask "what can FundFacts do?" for a tour with a live example.
+
 ## 1.0.3 (2026-10-01)
 
 - OpenAI package: the review walkthrough video (`review.demo_recording_url`) is included. No change to the skills or the server.

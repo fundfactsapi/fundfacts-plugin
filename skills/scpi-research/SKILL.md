@@ -4,7 +4,7 @@ description: Looks up French SCPIs (sociétés civiles de placement immobilier, 
 license: MIT
 metadata:
   author: FundFacts API
-  version: "1.0.3"
+  version: "1.0.4"
 ---
 
 # SCPI research with FundFacts

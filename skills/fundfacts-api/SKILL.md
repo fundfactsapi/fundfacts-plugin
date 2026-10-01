@@ -4,7 +4,7 @@ description: Guides writing code against the FundFacts REST API (https://fundfac
 license: MIT
 metadata:
   author: FundFacts API
-  version: "1.0.3"
+  version: "1.0.4"
 ---
 
 # Building on the FundFacts API

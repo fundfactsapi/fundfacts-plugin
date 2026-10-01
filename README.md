@@ -4,6 +4,8 @@ Fund, ETF and SCPI data inside Claude. Ask about any fund or ETF by ISIN or name
 
 The data is informational. Claude describes and compares funds; it does not tell you what to buy or sell.
 
+New to it? Ask "what can FundFacts do?" to get a tour with a live example: the iShares Core MSCI World UCITS ETF (IE00B4L5Y983), preloaded and not counted as a request. In clients that list MCP prompts, the server's `tour` prompt does the same.
+
 ## What is inside
 
 - `.mcp.json`: the FundFacts MCP server, `https://fundfactsapi.com/api/mcp` (Streamable HTTP, seven read-only tools: `get_fund`, `search_funds`, `compare_funds`, `analyze_portfolio`, `fund_overlap`, `get_scpi`, `search_scpi`).

@@ -1,10 +1,10 @@
 ---
 name: fund-research
-description: Looks up and explains factual data on UCITS funds, ETFs and money-market funds by ISIN or name with the FundFacts MCP server (search_funds, get_fund, compare_funds). Use when the user gives an ISIN or a fund or ETF name and asks about its fees (TER, ongoing charges, KID costs), SRRI / SRI risk indicator, SFDR article, replication (physical or synthetic), top holdings, sector or country exposure, returns, volatility, Sharpe ratio, drawdown or fund size, or wants two or more funds compared side by side.
+description: Looks up and explains factual data on UCITS funds, ETFs and money-market funds by ISIN or name with the FundFacts MCP server (search_funds, get_fund, compare_funds). Use when the user gives an ISIN or a fund or ETF name and asks about its fees (TER, ongoing charges, KID costs), SRRI / SRI risk indicator, SFDR article, replication (physical or synthetic), top holdings, sector or country exposure, returns, volatility, Sharpe ratio, drawdown or fund size, or wants two or more funds compared side by side. Also use when the user is new to FundFacts or asks what it does or how to start.
 license: MIT
 metadata:
   author: FundFacts API
-  version: "1.0.3"
+  version: "1.0.4"
 ---
 
 # Fund research with FundFacts
@@ -16,10 +16,19 @@ The FundFacts MCP server reads the documents each fund house publishes (KID, fac
 | Tool | Use it for | Requests counted on the user's account |
 |---|---|---|
 | `search_funds` | Turn a name, issuer or ISIN prefix into ISINs | None |
-| `get_fund` | One fund's full factsheet | One request |
+| `get_fund` | One fund's full factsheet | One request (none for the example fund IE00B4L5Y983) |
 | `compare_funds` | Two or more ISINs side by side (a compact row per fund) | One request per ISIN |
 
-Do not call `get_fund` or `compare_funds` speculatively or twice for the same ISIN in a conversation: each call counts on the user's account, so reuse the result you already have.
+Do not call `get_fund` or `compare_funds` speculatively or twice for the same ISIN in a conversation: each call counts on the user's account, so reuse the result you already have. The example fund `IE00B4L5Y983` is the one exception: it is not counted, so it is the fund to show when the user wants to see what FundFacts returns.
+
+## When the user is new or asks what FundFacts does
+
+1. **Explain in a few plain bullets**, without jargon: FundFacts looks up UCITS funds and ETFs by ISIN or name, and French SCPIs by name; it reads the fund's own documents (KID, factsheet, holdings file) to give its fees (ongoing charge, KID costs), its risk indicator on the 1 to 7 scale, what it holds, its sector and country exposure, its returns and risk figures, always with the date of the figures; it compares funds side by side; it looks through a portfolio of funds and measures how much funds overlap. It only reads data: informational, not investment advice.
+2. **Show a real fund.** Offer a live example, or show it straight away when the user asked for one: `get_fund` with `IE00B4L5Y983` (iShares Core MSCI World UCITS ETF). It is preloaded, answers instantly and is not counted as a request. If the user names a fund they own, use that one instead (it counts as one request).
+3. **Walk through what it shows and why it matters**, with the numbers: what the fund really costs each year (ongoing charge, transaction costs on top), how risky it is (risk indicator, volatility, worst drawdown), what it actually holds (largest holdings, top-10 weight, sectors and countries), how it has performed, and the date of the figures.
+4. **Suggest 2 or 3 next questions**: look up a fund they own by name or ISIN, compare it with another fund, look through their portfolio to see what they really own and how much their funds overlap.
+
+Keep it short: a few bullets, the example, the next questions. Read the example's payload as described below.
 
 ## Workflow
 
