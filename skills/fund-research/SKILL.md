@@ -3,8 +3,8 @@ name: fund-research
 description: Looks up and explains factual data on UCITS funds, ETFs and money-market funds by ISIN or name with the FundFacts MCP server (search_funds, get_fund, compare_funds). Use when the user gives an ISIN or a fund or ETF name and asks about its fees (TER, ongoing charges, KID costs), SRRI / SRI risk indicator, SFDR article, replication (physical or synthetic), top holdings, sector or country exposure, returns, volatility, Sharpe ratio, drawdown or fund size, or wants two or more funds compared side by side. Also use when the user is new to FundFacts or asks what it does or how to start.
 license: MIT
 metadata:
-  author: FundFacts API
-  version: "1.0.4"
+  author: GS LABS
+  version: "1.0.5"
 ---
 
 # Fund research with FundFacts

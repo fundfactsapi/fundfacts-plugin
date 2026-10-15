@@ -3,8 +3,8 @@ name: portfolio-analysis
 description: Analyses a portfolio of funds and ETFs with the FundFacts MCP server's analyze_portfolio (look-through of blended fees, weighted risk indicator, asset class, sector, country and region exposure, currency split and combined top holdings) and fund_overlap (how much two or more funds hold in common). Use when the user lists several funds with weights or amounts and asks what they really hold, their overall fees or risk, their exposure to a country or sector, whether their ETFs overlap or are redundant, or how diversified the portfolio is.
 license: MIT
 metadata:
-  author: FundFacts API
-  version: "1.0.4"
+  author: GS LABS
+  version: "1.0.5"
 ---
 
 # Portfolio look-through and overlap with FundFacts

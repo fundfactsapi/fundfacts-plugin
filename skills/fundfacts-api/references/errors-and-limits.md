@@ -21,7 +21,7 @@ Every error is `{ "error": { "code": string, "message": string, ...details } }`.
 
 ## What counts as a request
 
-- One request per ISIN answered (found or not found) on `/funds/{isin}`, `POST /funds`, `/portfolio` and `/overlap`, whether the payload came from the 24-hour store or was loaded fresh.
+- One request per fund found (a 404 `fund_not_found` is not counted, up to 15 misses a month or the plan's allowance if larger) on `/funds/{isin}`, `POST /funds`, `/portfolio` and `/overlap`, whether the payload came from the 24-hour store or was loaded fresh.
 - One per call on `/scpi/{id}`; one (HTML) or two (PDF) per `POST /factsheets`; five per `/extract` document.
 - Not counted: `/search`, `/scpi?q=`, `/me`, listing and re-reading saved factsheets, share links.
 - Not counted either: invalid ISINs inside `POST /funds`, `/portfolio` and `/overlap` (they are listed under `invalid`), `pending` entries, batch entries that failed to load, rejected calls (401, 429).

@@ -3,8 +3,8 @@ name: scpi-research
 description: Looks up French SCPIs (sociétés civiles de placement immobilier, "pierre-papier" real-estate funds) with the FundFacts MCP server's search_scpi and get_scpi tools and explains their figures. Use when the user names an SCPI or its management company (Corum, Perial, Atland Voisin, Paref, Iroko, La Française, AEW, Praemia, Sofidy…) or asks about a prix de souscription or de retrait, taux de distribution, TRI, frais de souscription or de gestion, TOF (taux d'occupation financier), valeur de reconstitution, parts en attente de retrait, collecte, patrimoine or the latest bulletin trimestriel.
 license: MIT
 metadata:
-  author: FundFacts API
-  version: "1.0.4"
+  author: GS LABS
+  version: "1.0.5"
 ---
 
 # SCPI research with FundFacts

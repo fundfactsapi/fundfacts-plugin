@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.5 (2026-10-15)
+
+- Publisher: the plugin is published by GS LABS (SARL, SIREN 948 578 919), the company that owns FundFacts API. The author in `plugin.json` and `marketplace.json`, the `author` of each skill, the OpenAI `developerName` and the LICENSE now name GS LABS, the identity verified on the OpenAI Platform. No change to the skills' behaviour or the server.
+
 ## 1.0.4 (2026-10-01)
 
 - Onboarding: when the user is new or asks what FundFacts does, the `fund-research` skill and the server's instructions explain it in a few plain bullets, show the example fund IE00B4L5Y983 (iShares Core MSCI World UCITS ETF, preloaded and not counted as a request), walk through what it shows and suggest next questions.
